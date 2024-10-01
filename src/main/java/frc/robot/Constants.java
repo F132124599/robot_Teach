@@ -22,11 +22,26 @@ public final class Constants {
     public static final int motor_sparkMax_ID = 0;
     public static final int motor_krakan_ID = 0;
 
+    public static final boolean motor_victorReverse = false;
+    public static final boolean motor_krakanReverse = false;
+    public static final boolean motor_SparkMaxReverse = false;
+
   }
 
   public static class CancoderConstants {
     public static final int absolutedEncoder_ID = 0;
     public static final double absolutedEncoderOffset = 0;
+    
+  }
+
+  public static class GyroConstants {
+    public static final int gyro_ID = 0;
+    
+  }
+
+  public static class DetectorConstants {
+    public static final int limitSwitch_ID = 0;
+    public static final int irSensor_ID = 0;
     
   }
 }

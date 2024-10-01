@@ -4,10 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkBase.FaultID;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +34,18 @@ public class MotorSubysytem extends SubsystemBase {
 
     sparkMax_encoder = motor_sparkMax.getEncoder();
 
+    motor_sparkMax.restoreFactoryDefaults();
+
+    motor_victor.setInverted(MotorConstants.motor_victorReverse);//設定馬達正反轉
+    motor_krakan.setInverted(MotorConstants.motor_krakanReverse);
+    motor_sparkMax.setInverted(MotorConstants.motor_SparkMaxReverse);
+
+    motor_victor.setNeutralMode(NeutralMode.Brake);//設定馬達煞車
+    motor_krakan.setNeutralMode(NeutralModeValue.Brake);
+    motor_sparkMax.setIdleMode(IdleMode.kBrake);
+
+    motor_sparkMax.burnFlash();
+
   }
 
   public double getSparkMaxVelocity() {
@@ -49,7 +65,7 @@ public class MotorSubysytem extends SubsystemBase {
   }
 
   public boolean isJam_sparkMax() {
-    return false;
+    return !motor_sparkMax.getFault(FaultID.kOvercurrent);//馬達是否卡住
   }
 
   public boolean isJam_Krakan() {
