@@ -7,7 +7,19 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.StartKrakan;
+import frc.robot.commands.StartKrakan_Joystick;
+import frc.robot.commands.StartSparkMax;
+import frc.robot.commands.StartVictor;
+import frc.robot.subsystems.BaseSubsystem;
+import frc.robot.subsystems.CancoderSubsystem;
+import frc.robot.subsystems.DetectorSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.GyroSubsystem;
+import frc.robot.subsystems.MotorSubysytem;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -21,10 +33,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final MotorSubysytem m_MotorSubysytem = new MotorSubysytem();
+  private final CancoderSubsystem m_CancoderSubsystem = new CancoderSubsystem();
+  private final BaseSubsystem m_BaseSubsystem = new BaseSubsystem();
+  private final DetectorSubsystem m_DetectorSubsystem = new DetectorSubsystem();
+  private final GyroSubsystem m_GyroSubsystem = new GyroSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController joystick = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -46,9 +62,15 @@ public class RobotContainer {
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
 
+    DoubleSupplier motorValue = ()-> joystick.getRawAxis(0);
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    joystick.a().whileTrue(new StartKrakan(m_MotorSubysytem));
+    joystick.b().whileTrue(new StartSparkMax(m_MotorSubysytem));
+    joystick.x().onTrue(new StartVictor(m_MotorSubysytem));
+
+    joystick.y().onTrue(new StartKrakan_Joystick(m_MotorSubysytem, motorValue));
   }
 
   /**
@@ -58,6 +80,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }
