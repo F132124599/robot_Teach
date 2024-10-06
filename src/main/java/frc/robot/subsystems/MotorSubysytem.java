@@ -80,6 +80,31 @@ public class MotorSubysytem extends SubsystemBase {
     return motor_krakan.getDeviceTemp().getValueAsDouble();//馬達溫度
   }
 
+  public void setMotor_Krakan(double value) {
+    motor_krakan.set(value);//0 ~ 1
+  }
+
+  public void setMotor_Sparkmax(double value) {
+    motor_sparkMax.set(value);//0 ~ 1
+  }
+
+  public void setMotor_Victor(double value) {
+    motor_victor.set(value);//0 ~ 1
+  }
+
+  public void setMotorVoltage_Krakan(double voltage) {
+    motor_krakan.setVoltage(voltage);//0 ~ 12
+  }
+
+  public void setMotorVoltage_Sparkmax(double voltage) {
+    motor_sparkMax.setVoltage(voltage);//0 ~ 12
+  }
+
+  public void setMotorVoltage_Victor(double voltage) {
+    motor_victor.setVoltage(voltage);//0 ~ 12
+  }
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

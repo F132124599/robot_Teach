@@ -28,7 +28,11 @@ public class GyroSubsystem extends SubsystemBase {
   }
 
   public double getAngle() {
-    return gyro.getAngle();//讀機器人旋轉的角度(absoluted)
+    return gyro.getAngle();//讀機器人旋轉的角度(relative range：-360 ~ 360)
+  }
+
+  public double getAngle_Yaw(){
+    return gyro.getYaw().getValueAsDouble();//讀機器人旋轉的角度(relative range：-368640 ~ 368640)
   }
 
   public double getPitch() {
